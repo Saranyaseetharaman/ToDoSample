@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just do it.</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <div class="app-header">Just do it.</div>
+
+    <% if (editTask) { %>
+        <form action="/ui/todos/<%= editTask.id %>?_method=PUT" method="POST" class="input-section">
+            <input type="text" name="title" value="<%= editTask.title %>" required autocomplete="off">
+            <button type="submit">Update</button>
+        </form>
+    <% } else { %>
+        <form action="/ui/todos" method="POST" class="input-section">
+            <input type="text" name="title" placeholder="Add a task." required autocomplete="off">
+            <button type="submit">Add Task</button>
+        </form>
+    <% } %>
+
+    <div class="task-list-wrapper">
+        <% tasks.forEach(task => { %>
+            <div class="task-item <%= task.completed ? 'task-completed-style' : '' %>">
+                <form action="/ui/todos/<%= task.id %>/toggle" method="POST">
+                    <input type="checkbox" <%= task.completed ? 'checked' : '' %> onChange="this.form.submit()">
+                </form>
+
+                <span class="task-text"><%= task.title %></span>
+                
+                <div class="menu-container">
+                    <button class="dots-btn">⋮</button>
+                    <div class="dropdown">
+                        <a href="/?edit=<%= task.id %>">Rename</a>
+                        <form action="/ui/todos/<%= task.id %>?_method=DELETE" method="POST">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+</body>
+</html>
