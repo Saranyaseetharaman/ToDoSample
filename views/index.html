@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just do it</title>
+    <style>
+        /* Dark Background */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0d1117; /* Dark navy background */
+            color: #c9d1d9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Title "Just do it." */
+        h1 {
+            margin-top: 15vh;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 50px;
+        }
+
+        /* Task Container */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Input Box + Button Wrapper */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Input Field */
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 16px;
+            font-size: 1rem;
+            background-color: #161b22; /* Darker input background */
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+        }
+        input[type="text"]::placeholder {
+            color: #6e7681;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 2px rgba(56, 139, 253, 0.3);
+        }
+
+        /* "Add Task" Button */
+        button.add-btn {
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: #2ea043; /* Green button color */
+            color: #ffffff;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button.add-btn:hover {
+            background-color: #3fb950;
+        }
+
+        /* Task Item */
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: #161b22; /* Darker task background */
+            border: 1px solid #30363d;
+            border-radius: 6px;
+        }
+
+        /* Task Text + Checkbox */
+        .task-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #58a6ff;
+            cursor: pointer;
+        }
+        .task-text {
+            font-size: 1rem;
+            color: #c9d1d9;
+        }
+        /* Strikethrough for completed task */
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #6e7681;
+        }
+
+        /* Options Menu (...) */
+        .options-menu {
+            color: #6e7681;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+        .options-menu:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Just do it.</h1>
+
+    <div class="container">
+        <!-- Input Area -->
+        <div class="input-group">
+            <input type="text" placeholder="Add a task.">
+            <button class="add-btn">Add Task</button>
+        </div>
+
+        <!-- Task 1 (Completed) -->
+        <div class="task-item completed">
+            <div class="task-content">
+                <input type="checkbox" checked>
+                <span class="task-text">Full stack web development (FSWD)</span>
+            </div>
+            <div class="options-menu">...</div>
+        </div>
+
+        <!-- Task 2 (Active) -->
+        <div class="task-item">
+            <div class="task-content">
+                <input type="checkbox">
+                <span class="task-text">Computer Networks (CN)</span>
+            </div>
+            <div class="options-menu">...</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
