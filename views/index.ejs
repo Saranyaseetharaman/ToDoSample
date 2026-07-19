@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just do it.</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <h1>Just do it.</h1>
+
+    <div class="container">
+        <!-- Add Task Form -->
+        <form action="/todos/add" method="POST" class="input-form">
+            <input type="text" name="task" placeholder="Add a task." required autocomplete="off">
+            <button type="submit">Add Task</button>
+        </form>
+
+        <!-- Dynamic List Rendering -->
+        <div>
+            <% todos.forEach(todo => { %>
+                <div class="todo-item">
+                    <div class="todo-left">
+                        <form action="/todos/toggle/<%= todo.id %>" method="POST" id="form-<%= todo.id %>">
+                            <input type="checkbox" <%= todo.completed ? 'checked' : '' %> onclick="document.getElementById('form-<%= todo.id %>').submit();">
+                        </form>
+                        <span class="task-text <%= todo.completed ? 'completed-task' : '' %>">
+                            <%= todo.task %>
+                        </span>
+                    </div>
+
+                    <!-- Options Action Overlay -->
+                    <div class="dropdown">
+                        <button class="dropbtn">&#8942;</button>
+                        <div class="dropdown-content">
+                            <!-- Native prompt for clean inline update -->
+                            <form action="/todos/update/<%= todo.id %>" method="POST" style="padding: 5px 10px;" 
+                                  onsubmit="let newName = prompt('Enter new task name:', '<%= todo.task %>'); if(newName){ this.task.value = newName; return true; } return false;">
+                                <input type="hidden" name="task" value="">
+                                <button type="submit" style="color: white; background: none; border: none; padding: 0; width: 100%; text-align: left; cursor: pointer;">Edit</button>
+                            </form>
+                            <form action="/todos/delete/<%= todo.id %>" method="POST">
+                                <button type="submit" style="color: #ff5c5c;">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+</body>
+</html>

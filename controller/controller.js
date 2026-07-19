@@ -1,39 +1,55 @@
-const { todos } = require('../model/model.js');
+const TodoModel = require('../model/model');
 
-const renderUI = (req, res) => {
-    const editId = req.query.edit;
-    const editTask = todos.find(t => t.id == editId) || null;
-    res.render('index', { tasks: todos, editTask });
+const isPostman = (req) => {
+    return req.headers['user-agent'] && req.headers['user-agent'].includes('PostmanRuntime');
 };
 
-const uiAddTask = (req, res) => {
-    if (req.body.title) {
-        const newTodo = { id: Date.now(), title: req.body.title, completed: false };
-        todos.push(newTodo);
+exports.getTodos = (req, res) => {
+    const todos = TodoModel.getAll();
+    if (isPostman(req)) {
+        return res.json({ success: true, data: todos });
     }
-    res.redirect('/');
+    res.render('index', { todos: todos });
 };
 
-const uiToggleTask = (req, res) => {
-    const task = todos.find(t => t.id == req.params.id);
-    if (task) task.completed = !task.completed;
-    res.redirect('/');
+exports.createTodo = (req, res) => {
+    const { task } = req.body;
+    if (!task) return res.status(400).send("Task name is required");
+    
+    const newTodo = TodoModel.create(task);
+    if (isPostman(req)) {
+        return res.json({ success: true, message: "Added successfully!", data: newTodo });
+    }
+    res.redirect('/todos');
 };
 
-const uiUpdateTask = (req, res) => {
-    const task = todos.find(t => t.id == req.params.id);
-    if (task) task.title = req.body.title;
-    res.redirect('/');
+exports.toggleTodo = (req, res) => {
+    const updated = TodoModel.toggleStatus(req.params.id);
+    if (!updated) return res.status(404).send("Task not found");
+    
+    if (isPostman(req)) {
+        return res.json({ success: true, message: "Status toggled!", data: updated });
+    }
+    res.redirect('/todos');
 };
 
-const uiDeleteTask = (req, res) => {
-    const index = todos.findIndex(t => t.id == req.params.id);
-    if (index !== -1) todos.splice(index, 1);
-    res.redirect('/');
+exports.updateTodo = (req, res) => {
+    const { task } = req.body;
+    const updated = TodoModel.update(req.params.id, task);
+    if (!updated) return res.status(404).send("Task not found");
+
+    if (isPostman(req)) {
+        return res.json({ success: true, message: "Updated!", data: updated });
+    }
+    res.redirect('/todos');
 };
 
-const apiGetTasks = (req, res) => {
-    res.json(todos);
-};
+exports.deleteTodo = (req, res) => {
+    const deleted = TodoModel.delete(req.params.id);
+    if (!deleted) return res.status(404).send("Task not found");
 
-module.exports = { renderUI, uiAddTask, uiToggleTask, uiUpdateTask, uiDeleteTask, apiGetTasks };
+    if (isPostman(req)) {
+        return res.json({ success: true, message: "Deleted successfully!" });
+    }
+    res.redirect('/todos');
+};

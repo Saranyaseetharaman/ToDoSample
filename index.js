@@ -1,20 +1,19 @@
 const express = require('express');
-const methodOverride = require('method-override');
 const app = express();
-const router = require('./router/router.js');
+const todoRoutes = require('./router/router');
 
-// Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(express.json());
+
+// Serving styles dynamically via public asset folder standard bindings
 app.use(express.static('public'));
 
-// View Engine
 app.set('view engine', 'ejs');
 
-// Routes
-app.use('/', router);
+app.get('/', (req, res) => res.redirect('/todos'));
+app.use('/todos', todoRoutes);
 
-// Server Listen
-app.listen(3000, () => {
-    console.log('🚀 Server running at http://localhost:3000');
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Client App running beautifully at http://localhost:${PORT}`);
 });

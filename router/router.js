@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const ctrl = require('../controller/controller.js');
+const todoController = require('../controller/controller');
 
-router.get('/', ctrl.renderUI);
-router.post('/ui/todos', ctrl.uiAddTask);
-router.post('/ui/todos/:id/toggle', ctrl.uiToggleTask);
-router.put('/ui/todos/:id', ctrl.uiUpdateTask);
-router.delete('/ui/todos/:id', ctrl.uiDeleteTask);
-router.get('/api/todos', ctrl.apiGetTasks);
+router.get('/', todoController.getTodos);
+router.post('/add', todoController.createTodo);
+router.post('/toggle/:id', todoController.toggleTodo);
+router.post('/update/:id', todoController.updateTodo);
+router.post('/delete/:id', todoController.deleteTodo);   
+router.delete('/delete/:id', todoController.deleteTodo); 
 
 module.exports = router;
